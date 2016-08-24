@@ -30,10 +30,10 @@ object AssetFunctions {
     val issuerBalance = Account.getAccount(issuer).getAssetBalanceQNT(assetId)
     val issuerShare = Share(issuer, issuerBalance, issuerBalance / totalDouble)
 
-    val otherShares = Account.getAllAccounts(0, Int.MaxValue).iterator().flatMap { acc =>
-      val balance = acc.getAssetBalanceQNT(assetId)
-      if (balance > 0 && acc.getId != issuer) {
-        Some(Share(acc.getId.toLong, balance, balance / totalDouble))
+    val otherShares = Account.getAssetAccounts(assetId, 0, Int.MaxValue).iterator().flatMap { acc =>
+      val balance = Account.getAssetBalanceQNT(acc.getAccountId, assetId)
+      if (balance > 0 && acc.getAccountId != issuer) {
+        Some(Share(acc.getAccountId, balance, balance / totalDouble))
       } else None
     }.toSeq
 

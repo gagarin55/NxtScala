@@ -1,14 +1,20 @@
 package nxt.nxtscala.test
 
-import org.scalatest.{BeforeAndAfter, FunSuite}
-import nxt.{NxtFunctions, Nxt}
+import nxt.{Nxt, NxtFunctions}
+import org.scalatest.{BeforeAndAfterAll, FunSuite}
+
 import scala.util.Random
 
-class NxtScalaSpecification extends FunSuite with BeforeAndAfter{
-  before{
+class NxtScalaSpecification extends FunSuite with BeforeAndAfterAll {
+
+  override def beforeAll(): Unit = {
     val propsRes = getClass.getClassLoader.getResource("nxt-default.properties")
     System.setProperty("nxt-default.properties", propsRes.getFile)
     Nxt.init()
+  }
+
+  override def afterAll(): Unit = {
+    Nxt.shutdown()
   }
 
   test("balance - non-negative"){
@@ -26,6 +32,4 @@ class NxtScalaSpecification extends FunSuite with BeforeAndAfter{
   test("asset balance - non-negative"){
     assert(NxtFunctions.assetBalance(Random.nextLong())(Random.nextLong()) >=0)
   }
-
-  after{}
 }

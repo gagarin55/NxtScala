@@ -106,7 +106,7 @@ object TransactionTemplates {
   }
 
   def checkThenFixPubKey(phrase: String, senderPhrase: String): Option[Try[Transaction]] = {
-    if (Option(NxtFunctions.addOrGetAccount(phrase).getPublicKey).isEmpty) {
+    if (Option(Account.getPublicKey(NxtFunctions.addOrGetAccount(phrase).getId())).isEmpty) {
       Some(publicKeyAnnouncement(phrase, senderPhrase))
     } else None
   }
