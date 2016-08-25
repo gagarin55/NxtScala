@@ -36,6 +36,8 @@ object LaunchingFunctions {
       Nxt.init(props)
   }
 
+  def shutdown(): Unit = Nxt.shutdown()
+
   def waitForDownloadingDone(){
     @tailrec
     def downloadStep():Unit = {

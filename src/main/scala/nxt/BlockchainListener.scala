@@ -14,4 +14,13 @@ trait BlockchainListener extends Listener[Block] {
   def start() {
     start(Seq(BlockchainProcessor.Event.AFTER_BLOCK_APPLY))
   }
+
+  def stop(eventsToStop: Seq[Event]): Unit = {
+    val bi = BlockchainProcessorImpl.getInstance
+    eventsToStop foreach (ev => bi.removeListener(this, ev))
+  }
+
+  def stop(): Unit = {
+    stop(Seq(BlockchainProcessor.Event.AFTER_BLOCK_APPLY))
+  }
 }
